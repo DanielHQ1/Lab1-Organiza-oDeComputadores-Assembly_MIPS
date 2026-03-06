@@ -15,6 +15,7 @@
     menu5: .asciiz "5. Sair \n mudança x"
 
 
+
     msg1: .asciiz "Digite o primeiro número: \n"
     msg2: .asciiz "Digite o segundo número: \n"
     resultado: .asciiz "\nResultado da operação: \n"
