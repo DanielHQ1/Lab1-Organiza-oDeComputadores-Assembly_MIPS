@@ -11,7 +11,7 @@
     menu1: .asciiz "1. Soma \n"
     menu2: .asciiz "2. Subtração \n"
     menu3: .asciiz "3. Multiplicação \n"
-    menu4: .asciiz "4. Divisão \n"
+    menu4: .asciiz "4. Divisão \n teste 1"
     menu5: .asciiz "5. Sair \n mudança x"
 
 
