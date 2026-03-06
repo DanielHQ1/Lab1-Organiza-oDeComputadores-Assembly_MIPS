@@ -12,7 +12,7 @@
     menu2: .asciiz "2. Subtração \n"
     menu3: .asciiz "3. Multiplicação \n"
     menu4: .asciiz "4. Divisão \n"
-    menu5: .asciiz "5. Sair \n"
+    menu5: .asciiz "5. Sair \n mudança x"
 
 
     msg1: .asciiz "Digite o primeiro número: \n"
