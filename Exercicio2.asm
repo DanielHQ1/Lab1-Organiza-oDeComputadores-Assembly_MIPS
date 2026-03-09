@@ -11,9 +11,6 @@
     msg2: .asciiz "Digite o segundo valor a ser lido:"
     msg3: .asciiz "Digite o terceiro valor a ser lido:"
     msg4: .asciiz "O maior valor é esse: "
-    msg5: .asciiz "O "
-    msg6: .asciiz " é maior que "  
-    msg7: .asciiz " porem, igual a "
     msg8: .asciiz "Todos os valores são iguais."
     
     

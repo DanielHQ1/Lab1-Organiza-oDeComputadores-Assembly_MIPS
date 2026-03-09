@@ -16,11 +16,16 @@
 
 
 
-    msg1: .asciiz "Digite o primeiro número: \n"
-    msg2: .asciiz "Digite o segundo número: \n"
-    resultado: .asciiz "\nResultado da operação: \n"
-    resto: .asciiz "resto da divisão: \n"
+    msg1: .asciiz "Digite o primeiro operando: \n"
+    msg2: .asciiz "Digite o segundo operando: \n"
+    resultado: .asciiz "\nResultado da operação: "
+    resto: .asciiz "\nresto da divisão: "
+    
+    retornar_menu: .asciiz "\nDigite qualquer inteiro para voltar ao menu \n"
+    
+    msg_erro: .asciiz "A opção escolhida não existe, por favor digite qualquer numero inteiro para voltar ao menu \n"
 
+    msg_finalizando: .asciiz "Finalizando o programa."
 .text
 .globl main
 main:
@@ -53,151 +58,135 @@ main:
 #Faz a leitura do console para verificar qual opção deverá ser chamada
 	li $v0, 5
 	syscall	
-	move $t1, $v0
+	move $s0, $v0
+	
+	li $t0, 1
+	li $t1, 5
+	
+	blt $s0, $t0, entrada_invalida
+	bgt $s0, $t1, entrada_invalida
 	
 #Altera o valor do registrador $t0 para 1, para comparar o valor digitado pelo usuário com a opção do menu	
+entrada_dados:
+
+	li $t0, 5
+	beq $t0, $s0, end
+
+	li $v0, 4
+	la $a0, msg1
+	syscall
+
+	li $v0, 5
+	syscall
+	move $s1, $v0
+	
+	li $v0, 4
+	la $a0, msg2
+	syscall
+
+	li $v0, 5
+	syscall
+	move $s2, $v0
+	
 	li $t0, 1
 #Faz a comparação dos valores nos registradores, caso seja verdade executa o trecho de instrução caso1
-	beq $t0, $t1, caso1
+	beq $t0, $s0, somar
 	
 	li $t0, 2
-	beq $t0, $t1, caso2
+	beq $t0, $s0, subtrair
 	
 	li $t0, 3
-	beq $t0, $t1, caso3
+	beq $t0, $s0, mutliplicar
 	
 	li $t0, 4
-	beq $t0, $t1, caso4
+	beq $t0, $s0, dividir
 	
-	li $t0, 5
-	beq $t0, $t1, end
+
+
+	
+	j entrada_invalida
+	
+
+somar:
+	add $s3, $s1, $s2
+	
+	j mostrar_resultado
+	
+subtrair:
+	sub $s3, $s1, $s2
+	
+	j mostrar_resultado
+
+mutliplicar:
+	mul $s3, $s1, $s2
+	
+	j mostrar_resultado
+	
+dividir:
+	div $s3, $s1, $s2
+	
+	j mostrar_resultado
 	
 	
 	
-	j end
-	
-caso1:
-	li $v0, 4
-	la $a0, msg1
-	syscall
-	
-	li $v0, 5
-	syscall
-	move $t0, $v0
-	
-	li $v0, 4
-	la $a0, msg2
-	syscall
-	
-	li $v0, 5
-	syscall
-	move $t1, $v0
-	
-	add $t2, $t0, $t1
-	
+mostrar_resultado:
 	li $v0, 4
 	la $a0, resultado
+	syscall
+	
+	li $v0, 1 
+	move $a0, $s3
+	syscall
+	
+	li $t5, 4
+	beq $s0, $t5, mostrar_resto
+	
+	li $v0, 4 
+	la $a0, retornar_menu
+	syscall
+	
+	li $v0, 5
+	syscall
+	
+	j main
+	
+entrada_invalida:
+	li $v0, 4
+	la $a0, msg_erro
+	syscall
+	
+	li $v0, 5
+	syscall
+	
+	j main
+	
+	
+mostrar_resto:
+	mul $s4, $s3, $s2
+	sub $s5, $s1, $s4
+	
+	li $v0, 4
+	la $a0, resto 
 	syscall
 	
 	li $v0, 1
-	move $a0, $t2
+	move $a0, $s5
 	syscall
 	
-	
-caso2:
-	li $v0, 4
-	la $a0, msg1
-	syscall
-	
-	li $v0, 5
-	syscall
-	move $t0, $v0
-	
-	li $v0, 4
-	la $a0, msg2
+	li $v0, 4 
+	la $a0, retornar_menu
 	syscall
 	
 	li $v0, 5
 	syscall
-	move $t1, $v0
 	
-	sub $t2, $t0, $t1
-	
-	li $v0, 4
-	la $a0, resultado
-	syscall
-	
-	la $v0, 1
-	move $a0, $t2
-	syscall
-	
-caso3:
-	li $v0, 4
-	la $a0, msg1
-	syscall
-	
-	li $v0, 5
-	syscall
-	move $t0, $v0
-	
-	li $v0, 4
-	la $a0, msg2
-	syscall
-	
-	li $v0, 5
-	syscall
-	move $t1, $v0
-	
-	mul $t2, $t0, $t1
-	
-	li $v0, 4
-	la $a0, resultado
-	syscall
-	
-	la $v0, 1
-	move $a0, $t2
-	syscall
-	
-caso4:
-	li $v0, 4
-	la $a0, msg1
-	syscall
-	
-	li $v0, 5
-	syscall
-	move $t0, $v0
-	
-	li $v0, 4
-	la $a0, msg2
-	syscall
-	
-	li $v0, 5
-	syscall
-	move $t1, $v0
-	
-	div $t2, $t0, $t1
-#Operação para pegar o resto da divisão
-	mul $t4, $t1, $t2
-	sub $t5, $t0, $t4
-	
-	li $v0, 4
-	la $a0, resto
-	syscall
-	
-	li $v0, 1
-	move $a0, $t5
-	syscall
-	
-	li $v0, 4
-	la $a0, resultado
-	syscall
-	
-	la $v0, 1
-	move $a0, $t2
-	syscall
-	
+	j main
 	
 end: 
+	li $v0, 4
+	la $a0, msg_finalizando
+	syscall
+	
 	li $v0, 10
 	syscall
 	

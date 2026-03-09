@@ -10,8 +10,8 @@
     msg1: .asciiz "Digite o numero para realizar as operações: "
     msg2: .asciiz "O numero é par \n"
     msg3: .asciiz "O numero é impar \n"
-    msg4: .asciiz "O 5 bit esta ligado \n"
-    msg5: .asciiz "O 5 bit esta desligado \n"
+    msg4: .asciiz "O 5 bit esta ligado"
+    msg5: .asciiz "O 5 bit esta desligado"
 
 .text
 .globl main
