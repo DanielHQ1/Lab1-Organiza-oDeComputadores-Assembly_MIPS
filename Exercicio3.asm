@@ -1,3 +1,5 @@
+
+
 #Lab 1 - Entrada/Saída e Estruturas Condicionais - Exercicio - 3
 
 #Nome: Daniel Henrique Carvalho RA: 10736657
@@ -44,7 +46,7 @@ main:
 		beq $t2, $t1, bit5_on 
 		j end
 	
-	j end
+
 	
 par:
 	li $v0, 4
