@@ -6,7 +6,7 @@
 #Nome: Laura Yumi Rodrigues Shiguemori RA:10735619
 
 .data
-    menu0: .asciiz "-----Menu----- \n"
+    menu0: .asciiz "\n-----Menu----- \n"
     menu1: .asciiz "1. Soma \n"
     menu2: .asciiz "2. Subtracao \n"
     menu3: .asciiz "3. Multiplicacao \n"
@@ -98,10 +98,12 @@ entrada_dados:
 #verificacao se o usuario digitou o segundo operando = 0
 	li $t1, 4 
 	beq $s0, $t1, teste_divisao
+	j verificacao
 	
 teste_divisao:
 	beq $s2, $zero, divisao_por_0	#trata o caso de o usuario tentar fazer a divsao por 0	
 	
+verificacao:
 #verificacao se o usuario digitou o numero 1
 	li $t0, 1
 	beq $t0, $s0, somar
@@ -139,7 +141,6 @@ dividir:
 	j mostrar_resultado
 	
 	
-	
 mostrar_resultado:
 #printa a string com a mensagem para mostrar o resultado
 	li $v0, 4
@@ -152,11 +153,7 @@ mostrar_resultado:
 #laco para caso de a operacao caso seja uma divisao e mostrar o resto
 	li $t5, 4
 	beq $s0, $t5, mostrar_resto
-	
-	li $v0, 4 
-	la $a0, retornar_menu
-	syscall
-	
+		
 	j main
 	
 entrada_invalida:
@@ -166,7 +163,6 @@ entrada_invalida:
 	syscall
 	
 	j main
-	
 	
 mostrar_resto:
 #calculo para mostrar o resto da divisao
@@ -182,9 +178,6 @@ mostrar_resto:
 	move $a0, $s5
 	syscall
 	
-	li $v0, 4 
-	la $a0, retornar_menu
-	syscall
 	
 	j main
 	
@@ -193,11 +186,7 @@ divisao_por_0:
 	li $v0, 4
 	la $a0, msg_divisao_nao_aceita
 	syscall
-	
-	li $v0, 4 
-	la $a0, retornar_menu
-	syscall
-	
+		
 	j main
 	
 end: 
