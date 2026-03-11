@@ -26,6 +26,8 @@
     msg_erro: .asciiz "A opção escolhida não existe, por favor digite qualquer numero inteiro para voltar ao menu \n"
 
     msg_finalizando: .asciiz "Finalizando o programa."
+    
+    msg_divisao_nao_aceita: .asciiz "Não é possivel realizar divisão por 0 \n"
 .text
 .globl main
 main:
@@ -87,6 +89,13 @@ entrada_dados:
 	li $v0, 5
 	syscall
 	move $s2, $v0
+
+#trata o caso de o usuario tentar fazer a divsao por 0	
+	li $t1, 4 
+	beq $s0, $t1, teste_divisao
+	
+teste_divisao:
+	beq $s2, $zero, divisao_por_0
 	
 	li $t0, 1
 #Faz a comparação dos valores nos registradores, caso seja verdade executa o trecho de instrução caso1
@@ -100,9 +109,6 @@ entrada_dados:
 	
 	li $t0, 4
 	beq $t0, $s0, dividir
-	
-
-
 	
 	j entrada_invalida
 	
@@ -130,14 +136,15 @@ dividir:
 	
 	
 mostrar_resultado:
+#printa a string com a mensagem para mostrar o resultado
 	li $v0, 4
 	la $a0, resultado
 	syscall
-	
+#printa o resultado
 	li $v0, 1 
 	move $a0, $s3
 	syscall
-	
+#laco para caso de a operacao for uma divisão e mostrar o resto
 	li $t5, 4
 	beq $s0, $t5, mostrar_resto
 	
@@ -151,6 +158,7 @@ mostrar_resultado:
 	j main
 	
 entrada_invalida:
+#mostra mesagem de erro e volta ao menu
 	li $v0, 4
 	la $a0, msg_erro
 	syscall
@@ -162,6 +170,7 @@ entrada_invalida:
 	
 	
 mostrar_resto:
+
 	mul $s4, $s3, $s2
 	sub $s5, $s1, $s4
 	
@@ -181,6 +190,21 @@ mostrar_resto:
 	syscall
 	
 	j main
+	
+divisao_por_0:
+	li $v0, 4
+	la $a0, msg_divisao_nao_aceita
+	syscall
+	
+	li $v0, 4 
+	la $a0, retornar_menu
+	syscall
+	
+	li $v0, 5
+	syscall
+	
+	j main
+	
 	
 end: 
 	li $v0, 4
