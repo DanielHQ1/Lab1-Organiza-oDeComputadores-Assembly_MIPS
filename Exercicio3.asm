@@ -17,25 +17,31 @@
 .globl main
 main:
 #printa a string msg1 na tela
-	li $v0, 4
+	li $v0, 4 
 	la $a0, msg1
 	syscall
 
+#coloca no registrador $v0 o valor de 5, que é entendido como entrada de valor inteiro, esse valor inteiro eh armazenado temporariamente em $v0
 #pede o input do valor que sera comparado para fazer as verificacoes de 5 bit e impar ou par	
 	li $v0, 5
 	syscall
 #transfere o valor de entrada do registrador $v0 para o registrador $s0
 	move $s0, $v0
 	
+#pula para a instrucao de codigo que faz a verificacao no quinto bit
 	j verifica_5bit
 	
+#label para poder continuar as verificacoes que o programa ainda precisa fazer, sendo nesse caso a verificacao de impar ou par, a label permite que a funcao que retorne a essa parte do codigo
 instrucao1:
 	j impar_ou_par
 	
+
 verifica_5bit:
+#armazena o valor de 16 no registrado $t0 que em binario ficaria 10000 
 	li $t0, 16
 	
 #faz a operação and do valor de entrada com o valor com 16 para fazer a verificação sobre o quinto bit
+#qualquer 10000 fazendo and com qualquer valor so podera ter duas saidas possiveis, sendo elas 10000 (caso o 5 bit esteja ligado) ou 00000(caso o 5 bit esteja desligado) 
 	and $s1, $t0, $s0
 	
 #caso o valor tiver o 5 bit ligado o valor sera sera maior que 0
